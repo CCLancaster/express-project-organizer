@@ -12,9 +12,12 @@ router.post('/', (req, res) => {
     githubLink: req.body.githubLink,
     deployLink: req.body.deployedLink,
     description: req.body.description,
-    category: req.body.category
   }
-  })
+  }).then(db.category.findOrCreate({
+    where: {
+      name: req.body.category
+    }
+  }))
   .then(([project, created]) => {
     console.log(`Successfully ${created ? 'created' : 'found'} ${project.name} ${project.category}`);
     res.redirect('/')
